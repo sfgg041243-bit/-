@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>오늘의 개뜬금 포츈쿠키</title>
+  <meta name="description" content="의미 없는 말 500개. 하루 1개. 랜덤. 저장." />
+  <style>
+    :root{
+      --bg0:#070A12;
+      --bg1:#0B1020;
+      --card:rgba(255,255,255,.06);
+      --line:rgba(255,255,255,.12);
+      --text:#ECF2FF;
+      --muted:rgba(236,242,255,.68);
+      --accent:#7DD3FC;
+      --accent2:#A7F3D0;
+      --pink:#FB7185;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --r1:18px;
+      --r2:26px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Noto Sans KR, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 20% 0%, rgba(125,211,252,.16), transparent 60%),
+        radial-gradient(900px 500px at 80% 0%, rgba(167,243,208,.12), transparent 60%),
+        radial-gradient(1000px 600px at 50% 120%, rgba(251,113,133,.08), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:18px}
+    .top{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:44px;height:44px;border-radius:16px;display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(125,211,252,.22), rgba(167,243,208,.14));
+      border:1px solid rgba(125,211,252,.28);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      font-size:20px;
+    }
+    h1{margin:0;font-size:18px;letter-spacing:.2px}
+    .sub{margin-top:4px;font-size:12px;color:var(--muted)}
+    .pillbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+    .pill{
+      padding:9px 12px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      font-size:12px;
+      backdrop-filter: blur(10px);
+      white-space:nowrap;
+    }
+
+    .panel{
+      border:1px solid var(--line);
+      border-radius:var(--r2);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .hd{
+      padding:14px 14px 12px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.14);
+      flex-wrap:wrap;
+    }
+    .hd b{font-size:14px}
+    .hd .right{display:flex;gap:8px;flex-wrap:wrap}
+    button{
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius:14px;
+      padding:10px 12px;
+      font:inherit;
+      transition:.16s transform,.16s background,.16s border-color;
+      white-space:nowrap;
+    }
+    button:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18)}
+    button:active{transform:scale(.98)}
+    .btn-primary{
+      background:linear-gradient(135deg, rgba(125,211,252,.26), rgba(167,243,208,.14));
+      border-color:rgba(125,211,252,.32);
+    }
+    .btn-pink{
+      background:linear-gradient(135deg, rgba(251,113,133,.22), rgba(125,211,252,.10));
+      border-color:rgba(251,113,133,.28);
+    }
+
+    .bd{padding:14px}
+    .card{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.16);
+      border-radius:var(--r2);
+      padding:18px 16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card:before{
+      content:"";
+      position:absolute;inset:-2px;
+      background:
+        radial-gradient(700px 280px at 30% 0%, rgba(125,211,252,.16), transparent 60%),
+        radial-gradient(700px 280px at 80% 10%, rgba(167,243,208,.12), transparent 60%);
+      opacity:.55;pointer-events:none;
+    }
+    .card > *{position:relative}
+
+    .label{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:12px;color:var(--muted);
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      margin-bottom:12px;
+      white-space:nowrap;
+    }
+    .fortune{
+      font-weight:900;
+      font-size:28px;
+      line-height:1.18;
+      letter-spacing:-.4px;
+      margin:0;
+      text-align:center;
+    }
+    .meta{
+      margin-top:12px;
+      display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .actions{
+      margin-top:14px;
+      display:flex;gap:10px;flex-wrap:wrap;
+    }
+    .actions button{flex:1;min-width:140px}
+
+    .grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width:820px){.grid{grid-template-columns:1fr}}
+
+    .list{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.12);
+      border-radius:var(--r2);
+      padding:12px;
+      max-height:280px;
+      overflow:auto;
+    }
+    .item{
+      display:flex;gap:10px;align-items:flex-start;justify-content:space-between;
+      padding:10px 10px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      margin-bottom:10px;
+    }
+    .item:last-child{margin-bottom:0}
+    .item .t{
+      font-size:13px;line-height:1.4;
+      color:rgba(236,242,255,.86);
+      word-break:break-word;
+    }
+    .item .s{
+      font-size:11px;color:var(--muted);
+      margin-top:6px;
+    }
+    .mini{
+      display:flex;gap:8px;align-items:center;
+      flex:0 0 auto;
+    }
+    .mini button{
+      padding:8px 10px;border-radius:12px;
+      font-size:12px;
+      min-width:auto;
+      flex:0 0 auto;
+    }
+
+    .toast{
+      position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+      background:rgba(0,0,0,.78);
+      border:1px solid rgba(255,255,255,.12);
+      padding:10px 12px;border-radius:14px;
+      color:var(--text);
+      display:none;
+      z-index:60;
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      font-size:13px;
+      backdrop-filter: blur(10px);
+      max-width:92vw;
+    }
+    .hint{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+    }
+    .hint code{
+      background:rgba(255,255,255,.06);
+      padding:2px 6px;border-radius:8px;
+      border:1px solid rgba(255,255,255,.10);
+      color:rgba(236,242,255,.86);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">🥠</div>
+        <div>
+          <h1>오늘의 개뜬금 포츈쿠키</h1>
+          <div class="sub">의미 없음 500개 · 하루 1개 고정 · 랜덤 뽑기 가능</div>
+        </div>
+      </div>
+
+      <div class="pillbar">
+        <div class="pill" id="poolInfo">문장 풀: 500개</div>
+        <div class="pill" id="todayKey">오늘 키: -</div>
+      </div>
+    </div>
+
+    <section class="panel">
+      <div class="hd">
+        <b>🍀 오늘의 개소리</b>
+        <div class="right">
+          <button class="btn-primary" id="btnOpen">오늘 열기</button>
+          <button id="btnRandom" class="btn-pink">랜덤 뽑기</button>
+          <button id="btnReset">오늘 초기화</button>
+        </div>
+      </div>
+
+      <div class="bd">
+        <div class="card">
+          <div class="label" id="labelMode">아직 안 열었음</div>
+          <p class="fortune" id="fortuneText">버튼 눌러라잉.</p>
+          <div class="meta">
+            <div id="metaLeft">—</div>
+            <div id="metaRight">—</div>
+          </div>
+
+          <div class="actions">
+            <button id="btnSave">⭐ 저장</button>
+            <button id="btnCopy">📋 복사</button>
+          </div>
+
+          <div class="hint">
+            - <code>오늘 열기</code>는 하루 1번 고정<br/>
+            - <code>랜덤 뽑기</code>는 그냥 뽑기(의미 없음, vibe only)<br/>
+            - 저장은 이 브라우저에만 남는다 (localStorage)
+          </div>
+        </div>
+
+        <div class="grid">
+          <div>
+            <div class="label">⭐ 저장한 문장</div>
+            <div class="list" id="savedList"></div>
+          </div>
+          <div>
+            <div class="label">🕒 히스토리 (최근 20개)</div>
+            <div class="list" id="historyList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast">복사됨</div>
+
+<script>
+/* =========================
+   0) 유틸
+   ========================= */
+const $ = (id)=>document.getElementById(id);
+
+function toast(msg){
+  const t = $("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=>{ t.style.display="none"; }, 1300);
+}
+
+function pad2(n){ return String(n).padStart(2,"0"); }
+
+function todayKey(){
+  const d = new Date();
+  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+}
+
+/* (seeded RNG) */
+function mulberry32(seed){
+  return function(){
+    let t = seed += 0x6D2B79F5;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+}
+function hashStr(s){
+  // 간단 문자열 해시
+  let h = 2166136261;
+  for(let i=0;i<s.length;i++){
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+function pick(rng, arr){
+  return arr[Math.floor(rng() * arr.length)];
+}
+function josa(rng, word, a, b){
+  // 아주 대충: 받침 여부로 조사 선택(대충이라 더 웃김)
+  const last = word.charCodeAt(word.length-1);
+  const hasBatchim = (last >= 0xAC00 && last <= 0xD7A3) ? ((last - 0xAC00) % 28 !== 0) : (rng() < 0.5);
+  return word + (hasBatchim ? a : b);
+}
+
+/* =========================
+   1) “고정 문장” (네 취향 핵심)
+   ========================= */
+const fixed = [
+  "너는 방귀쟁이 뿡뿡이다.",
+  "오늘은 양말이 너를 싫어한다.",
+  "고양이는 알고 있다. 근데 안 알려준다.",
+  "갑자기 오이가 생각난다. 이유는 없다.",
+  "네가 지금 깜빡한 건 중요하지 않다. 아마도.",
+  "숟가락은 오늘도 포크를 무시했다.",
+  "엘리베이터는 너를 시험하고 있다.",
+  "바나나는 바나나답게 살고 있다.",
+  "오늘은 물이 맛이 없다. 네 탓이다.",
+  "방금 생각한 그건 아니다. 절대.",
+  "너는 사실 비둘기랑 닮았다.",
+  "네 인생은 지금 ‘로딩중’이다. 로딩만.",
+  "오늘의 행운 색깔은 그냥 회색이다.",
+  "너는 지금 아무 의미 없이 이걸 읽고 있다.",
+  "양파는 억울하다.",
+  "오늘은 왼쪽 신발이 우세하다.",
+  "토마토는 아직도 과일인 척한다.",
+  "이 문장은 곧 잊힌다.",
+  "네 양말 한 짝은 다른 삶을 살고 있다.",
+  "오늘의 운세: 그냥 그럼."
+];
+
+/* =========================
+   2) 자동 생성기: “개뜬금 문장 500개 풀” 만들기
+   ========================= */
+function buildPool500(){
+  const pool = [...fixed];
+
+  // 사물/동물/개념 (의인화용)
+  const nouns = [
+    "양말", "비둘기", "오이", "양파", "토마토", "바나나", "수건", "베개", "냉장고", "리모컨",
+    "엘리베이터", "신호등", "우산", "슬리퍼", "책상", "의자", "창문", "구름", "바닥", "컵라면",
+    "포크", "숟가락", "젓가락", "치약", "칫솔", "휴지", "물티슈", "고무줄", "지우개", "연필",
+    "마우스", "키보드", "와이파이", "배터리", "충전기", "이어폰", "모니터", "시계", "달력", "거울",
+    "고양이", "강아지", "문어", "금붕어", "햄스터", "참새", "개미", "모기", "파리", "나방",
+    "기분", "집중력", "의욕", "한숨", "콧물", "눈꺼풀", "배고픔", "귀찮음", "현타", "삐짐"
+  ];
+
+  const verbs = [
+    "삐졌다", "웃었다", "도망갔다", "잠들었다", "퇴근했다", "출근했다", "거절했다", "무시했다",
+    "배신했다", "포기했다", "쫓아냈다", "기다렸다", "현타가 왔다", "먼저 갔다", "혼자 놀았다",
+    "갑자기 진지해졌다", "쓸데없이 열심이었다", "대충했다", "아무것도 안 했다", "그냥 있었다"
+  ];
+
+  const endings = [
+    "이유는 없다.", "그냥 그렇다.", "아쉽게도.", "다행히도.", "아마도.", "절대.", "진짜로.", "농담이다.",
+    "이건 운세가 아니다.", "이 문장은 책임지지 않는다.", "오늘만 그렇다.", "내일도 그럴 수 있다."
+  ];
+
+  const patterns = [
+    (rng)=>`오늘은 ${josa(rng, pick(rng,nouns),"이","가")} ${pick(rng,verbs)}. ${pick(rng,endings)}`,
+    (rng)=>`${josa(rng, pick(rng,nouns),"은","는")} ${pick(rng,verbs)}. 너는 모른다.`,
+    (rng)=>`너는 사실 ${pick(rng,nouns)}랑 닮았다. ${pick(rng,endings)}`,
+    (rng)=>`지금 ${pick(rng,nouns)} 생각이 난다. ${pick(rng,endings)}`,
+    (rng)=>`네 ${pick(rng,nouns)}(은/는) 오늘 컨디션이 별로다. ${pick(rng,endings)}`,
+    (rng)=>`방금 ${pick(rng,nouns)}(이/가) 너를 평가했다. 결과는 비공개다.`,
+    (rng)=>`오늘의 미션: ${pick(rng,["아무 생각 안 하기","괜히 웃지 않기","물 마시기","양말 찾기","리모컨 찾기","한숨 쉬지 않기","대충 살기"])}. ${pick(rng,endings)}`,
+    (rng)=>`지금 이 문장을 끝까지 읽으면 ${pick(rng,["아무 일도 없다","그냥 끝이다","조금 더 어이없다","현타가 온다"])}.`,
+    (rng)=>`${pick(rng,["경고","공지","속보","긴급"])}: ${pick(rng,nouns)}(이/가) ${pick(rng,verbs)}.`,
+    (rng)=>`너는 방금 ${pick(rng,["눈을 깜빡였다","자세를 바꿨다","한숨 쉬었다","생각을 멈췄다","시간을 낭비했다"])}. 축하한다.`
+  ];
+
+  // 500개 될 때까지 생성 (중복 최소화)
+  const seen = new Set(pool);
+  let attempt = 0;
+
+  while(pool.length < 500 && attempt < 50000){
+    attempt++;
+    const rng = mulberry32(hashStr("pool-"+attempt));
+    const make = pick(rng, patterns);
+    let s = make(rng);
+
+    // (가벼운 정리) 괄호 표기 웃김 유지, 너무 길면 컷
+    s = s.replace(/\s+/g," ").trim();
+    if(s.length > 60) s = s.slice(0, 58) + "…";
+
+    if(!seen.has(s)){
+      seen.add(s);
+      pool.push(s);
+    }
+  }
+
+  // 혹시 모자라면 마지막에 반복 허용(거의 안 그럼)
+  while(pool.length < 500){
+    pool.push("오늘은 그냥 오늘이다. 진짜로.");
+  }
+
+  return pool;
+}
+
+const POOL = buildPool500();
+$("poolInfo").textContent = `문장 풀: ${POOL.length}개`;
+
+/* =========================
+   3) 상태 저장 (오늘/히스토리/즐겨찾기)
+   ========================= */
+const LS_TODAY = "one_line_today_v1";   // { key, text, idx, ts }
+const LS_HIST  = "one_line_hist_v1";    // [{key, text, mode, ts}]
+const LS_SAVED = "one_line_saved_v1";   // [{text, ts}]
+
+function loadJSON(key, fallback){
+  try{
+    const raw = localStorage.getItem(key);
+    if(!raw) return fallback;
+    return JSON.parse(raw);
+  }catch(e){ return fallback; }
+}
+function saveJSON(key, val){
+  localStorage.setItem(key, JSON.stringify(val));
+}
+
+function addHistory(entry){
+  const hist = loadJSON(LS_HIST, []);
+  hist.unshift(entry);
+  saveJSON(LS_HIST, hist.slice(0,20));
+  renderHistory();
+}
+
+function renderSaved(){
+  const saved = loadJSON(LS_SAVED, []);
+  const el = $("savedList");
+  if(!saved.length){
+    el.innerHTML = `<div style="color:var(--muted);font-size:12px;">아직 저장한 게 없다. (⭐ 눌러봐라잉)</div>`;
+    return;
+  }
+  el.innerHTML = saved.map((x,i)=>`
+    <div class="item">
+      <div style="min-width:0;">
+        <div class="t">${escapeHtml(x.text)}</div>
+        <div class="s">${new Date(x.ts).toLocaleString()}</div>
+      </div>
+      <div class="mini">
+        <button onclick="copyText(${i}, 'saved')">복사</button>
+        <button onclick="removeSaved(${i})">삭제</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderHistory(){
+  const hist = loadJSON(LS_HIST, []);
+  const el = $("historyList");
+  if(!hist.length){
+    el.innerHTML = `<div style="color:var(--muted);font-size:12px;">히스토리 없음. (랜덤 뽑기 ㄱㄱ)</div>`;
+    return;
+  }
+  el.innerHTML = hist.map((x,i)=>`
+    <div class="item">
+      <div style="min-width:0;">
+        <div class="t">${escapeHtml(x.text)}</div>
+        <div class="s">${x.mode} · ${x.key} · ${new Date(x.ts).toLocaleTimeString()}</div>
+      </div>
+      <div class="mini">
+        <button onclick="copyText(${i}, 'hist')">복사</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+/* =========================
+   4) 포츈 뽑기 로직
+   ========================= */
+function showFortune(text, mode, idx){
+  $("fortuneText").textContent = text;
+  $("labelMode").textContent = mode;
+  $("metaLeft").textContent = `문장번호: #${idx+1}`;
+  $("metaRight").textContent = `풀: ${POOL.length}개`;
+}
+
+function pickToday(){
+  const key = todayKey();
+  $("todayKey").textContent = `오늘 키: ${key}`;
+
+  const stored = loadJSON(LS_TODAY, null);
+  if(stored && stored.key === key && stored.text){
+    showFortune(stored.text, "✅ 오늘의 개소리(고정)", stored.idx ?? 0);
+    return stored;
+  }
+
+  // 오늘 seed로 고정 선택
+  const rng = mulberry32(hashStr("today-"+key));
+  const idx = Math.floor(rng() * POOL.length);
+  const text = POOL[idx];
+
+  const obj = { key, text, idx, ts: Date.now() };
+  saveJSON(LS_TODAY, obj);
+
+  showFortune(text, "✅ 오늘의 개소리(고정)", idx);
+  addHistory({ key, text, mode:"오늘", ts: Date.now() });
+
+  return obj;
+}
+
+function pickRandom(){
+  const rng = mulberry32((Math.random()*1e9)>>>0);
+  const idx = Math.floor(rng() * POOL.length);
+  const text = POOL[idx];
+
+  showFortune(text, "🎲 랜덤(그냥 뽑기)", idx);
+  addHistory({ key: todayKey(), text, mode:"랜덤", ts: Date.now() });
+}
+
+function resetToday(){
+  localStorage.removeItem(LS_TODAY);
+  toast("오늘 고정 초기화됨");
+  $("labelMode").textContent = "아직 안 열었음";
+  $("fortuneText").textContent = "버튼 눌러라잉.";
+  $("metaLeft").textContent = "—";
+  $("metaRight").textContent = "—";
+}
+
+/* =========================
+   5) 버튼 동작
+   ========================= */
+function saveCurrent(){
+  const text = $("fortuneText").textContent.trim();
+  if(!text || text === "버튼 눌러라잉."){
+    toast("저장할 게 없다잉");
+    return;
+  }
+  const saved = loadJSON(LS_SAVED, []);
+  if(saved.some(x=>x.text === text)){
+    toast("이미 저장돼있다잉");
+    return;
+  }
+  saved.unshift({ text, ts: Date.now() });
+  saveJSON(LS_SAVED, saved);
+  renderSaved();
+  toast("⭐ 저장됨");
+}
+
+async function copyCurrent(){
+  const text = $("fortuneText").textContent.trim();
+  if(!text || text === "버튼 눌러라잉."){ toast("복사할 게 없다잉"); return; }
+  try{
+    await navigator.clipboard.writeText(text);
+    toast("복사됨");
+  }catch(e){
+    // fallback
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+    toast("복사됨");
+  }
+}
+
+window.removeSaved = function(i){
+  const saved = loadJSON(LS_SAVED, []);
+  saved.splice(i,1);
+  saveJSON(LS_SAVED, saved);
+  renderSaved();
+  toast("삭제됨");
+}
+
+window.copyText = async function(i, from){
+  const arr = from === "saved" ? loadJSON(LS_SAVED, []) : loadJSON(LS_HIST, []);
+  const text = arr[i]?.text;
+  if(!text) return;
+  try{
+    await navigator.clipboard.writeText(text);
+    toast("복사됨");
+  }catch(e){
+    toast("복사 실패(권한)");
+  }
+}
+
+/* =========================
+   6) 초기 렌더
+   ========================= */
+$("todayKey").textContent = `오늘 키: ${todayKey()}`;
+renderSaved();
+renderHistory();
+
+// 버튼 연결
+$("btnOpen").addEventListener("click", ()=>{ pickToday(); });
+$("btnRandom").addEventListener("click", ()=>{ pickRandom(); });
+$("btnReset").addEventListener("click", ()=>{ resetToday(); });
+$("btnSave").addEventListener("click", ()=>{ saveCurrent(); });
+$("btnCopy").addEventListener("click", ()=>{ copyCurrent(); });
+
+// 페이지 들어오면: 이미 오늘 열었으면 보여주기
+(function boot(){
+  const key = todayKey();
+  const stored = loadJSON(LS_TODAY, null);
+  if(stored && stored.key === key && stored.text){
+    showFortune(stored.text, "✅ 오늘의 개소리(고정)", stored.idx ?? 0);
+  }else{
+    // 안내 텍스트 유지
+  }
+})();
+</script>
+</body>
+</html>
